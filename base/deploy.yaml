@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: the-deployment
+  annotations:
+    app: nginx
+spec:
+  template:
+    spec:
+      containers:
+      - name: nginxapp
+        image: nginx:1.7.9
+        env:
+        - name: COMMON
+          valueFrom:
+            configMapKeyRef:
+              name: config
+              key: common
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/config
+      volumes:
+      - name: config-volume
+        configMap:
+          name: file-config
